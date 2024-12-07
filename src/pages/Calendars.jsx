@@ -7,9 +7,8 @@ import { useUserContext } from '../contexts/UserContext';
 
 export default function Calendars() {
   const { userData, updateUserData } = useUserContext();
-
   const [showModal, setShowModal] = useState(false); // Track modal visibility
-  const [todo, setTodo] = useState({ name: '', date: '' }); // Store to-do item as an object
+  const [todo, setTodo] = useState({ name: '', date: '', color: 'blue' }); // Store to-do item as an object
 
   // Handle showing and hiding the modal
   const handleClose = () => setShowModal(false);
@@ -22,11 +21,11 @@ export default function Calendars() {
 
     // Update userData with the new todo array
     updateUserData({ ...userData, todo: updatedTodos });
-    
+
     handleClose(); // Close the modal after submitting
   };
 
-  // Handle input changes for to-do name and date
+  // Handle input changes for to-do name, date, and color
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setTodo((prevTodo) => ({
@@ -35,27 +34,18 @@ export default function Calendars() {
     }));
   };
 
-  // Prepare markedDates to pass to the Calendar component
-  const markedDates = userData?.todo.reduce((acc, todoItem) => {
-    // If the date already exists, add the new to-do item to it
-    if (!acc[todoItem.date]) {
-      acc[todoItem.date] = { todoItems: [] };
-    }
-    acc[todoItem.date].todoItems.push(todoItem); // Add the to-do item to the date's array
-
-    return acc;
-  }, {});
-
   return (
     <>
       <Card>
         <Card.Body style={{ display: 'flex', alignItems: 'center' }}>
           <div style={{ width: '65vw' }}>
-            <Calendar markedDates={markedDates} /> {/* Pass the markedDates to the Calendar */}
+            <Calendar userData={userData} />
           </div>
-          <Button style={{ marginLeft: '20px' }} onClick={handleShow}>Add To-Do</Button> {/* Button opens modal */}
+          <Button style={{ marginLeft: '20px' }} onClick={handleShow}>
+            Add To-Do
+          </Button>
         </Card.Body>
-      </Card> 
+      </Card>
 
       {/* Modal for adding to-do */}
       <Modal show={showModal} onHide={handleClose}>
@@ -69,7 +59,7 @@ export default function Calendars() {
               <Form.Control
                 type="text"
                 placeholder="Enter to-do name"
-                name="name"
+                name="name" // Use name attribute to access in state
                 value={todo.name}
                 onChange={handleInputChange}
               />
@@ -79,16 +69,35 @@ export default function Calendars() {
               <Form.Label>To-Do Date</Form.Label>
               <Form.Control
                 type="date"
-                name="date"
+                name="date" // Use name attribute to access in state
                 value={todo.date}
                 onChange={handleInputChange}
               />
             </Form.Group>
+
+            <Form.Group controlId="todoColor">
+              <Form.Label>Color</Form.Label>
+              <Form.Control
+                as="select"
+                name="color"
+                value={todo.color}
+                onChange={handleInputChange}
+              >
+                <option value="blue">Blue</option>
+                <option value="red">Red</option>
+                <option value="green">Green</option>
+                <option value="yellow">Yellow</option>
+              </Form.Control>
+            </Form.Group>
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>Close</Button>
-          <Button variant="primary" onClick={handleSubmit}>Save To-Do</Button>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleSubmit}>
+            Save To-Do
+          </Button>
         </Modal.Footer>
       </Modal>
     </>
