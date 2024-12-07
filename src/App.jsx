@@ -6,6 +6,7 @@ import Dashboard from './pages/Dashboard'
 import NotLoggedIn from './pages/NotLoggedIn';
 import ProtectedLayout from './components/ProtectedLayout';
 import Activities from './pages/Activities';
+import Stats from './pages/Stats';
 
 function App() {
   return (
@@ -19,6 +20,8 @@ function App() {
         <Route element={<ProtectedLayout />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/activities" element={<Activities />} />
+          <Route path="/stats" element={<Stats />} />
+
         </Route>
       </Routes>
     </BrowserRouter>
