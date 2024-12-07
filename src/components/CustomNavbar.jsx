@@ -35,7 +35,7 @@ function CustomNavbar() {
                             <Nav.Link href="/dashboard" className={styles.navItem}>Dashboard</Nav.Link>
                             <Nav.Link href="/activities" className={styles.navItem}>Activities</Nav.Link>
                             <Nav.Link href="/stats" className={styles.navItem}>Stats</Nav.Link>
-                            <Nav.Link href="/calendars" className={styles.navItem}>Calendars</Nav.Link>
+                            <Nav.Link href="/calendars" className={styles.navItem}>Calendar</Nav.Link>
                             
                         </Nav>
                         <Button 
