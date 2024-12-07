@@ -44,10 +44,11 @@ export function AuthProvider({ children }) {
         }
     }
 
-    async function login() {
+    async function login(email, password) {
         try {
             await signInWithEmailAndPassword(auth, email, password);
         } catch (error) {
+            console.error(error)
             let errorMessage = "An unknown error occurred. Please try again."
 
             if (error.code === "auth/user-not-found") {
