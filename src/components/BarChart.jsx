@@ -96,22 +96,22 @@ const BarChart = () => {
       {
         label: 'Work',
         data: workHours,
-        backgroundColor: '#FF6384',
+        backgroundColor: '#F24236',
       },
       {
         label: 'Exercise',
         data: exerciseHours,
-        backgroundColor: '#36A2EB',
+        backgroundColor: '#FCCA46',
       },
       {
         label: 'Leisure',
         data: leisureHours,
-        backgroundColor: '#FFCE56',
+        backgroundColor: '#3F88C5',
       },
       {
         label: 'Learning',
         data: learningHours,
-        backgroundColor: '#4BC0C0',
+        backgroundColor: '#32DE8A',
       },
     ],
   };
@@ -149,22 +149,24 @@ const BarChart = () => {
       <h1 className="text-center mb-4">Activity Stats</h1>
 
       {/* Dropdown for selecting time period */}
-      <div className="mb-4">
-        <label htmlFor="timePeriod" className="form-label">Select Time Period:</label>
-        <select
-          id="timePeriod"
-          className="form-select"
-          value={timePeriod}
-          onChange={handleTimePeriodChange}
-        >
-          <option value="7 days">Last 7 days</option>
-          <option value="30 days">Last 30 days</option>
-          <option value="1 month">Last 1 month</option>
-          <option value="3 months">Last 3 months</option>
-          <option value="6 months">Last 6 months</option>
-          <option value="1 year">Last 1 year</option>
-        </select>
-      </div>
+    <div className="mb-4">
+    <label htmlFor="timePeriod" className="form-label">Select Time Period:</label>
+     <select
+       id="timePeriod"
+       className="form-select"
+       value={timePeriod}
+       onChange={handleTimePeriodChange}
+       style={{ backgroundColor: '#eeeaea' }}
+  >
+       <option value="7 days">Last 7 days</option>
+       <option value="30 days">Last 30 days</option>
+       <option value="1 month">Last 1 month</option>
+       <option value="3 months">Last 3 months</option>
+        <option value="6 months">Last 6 months</option>
+       <option value="1 year">Last 1 year</option>
+       </select>
+    </div>
+
 
       {/* Bar Chart */}
       <div className="d-flex justify-content-center">

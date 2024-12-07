@@ -5,15 +5,14 @@ import CustomNavbar from '../components/CustomNavbar';
 
 function Stats() {
     return (
-
-        <div>
-            <CustomNavbar />
-            <BarChart />
-            <PieChart />
-
-
+        <div style={{ backgroundColor: '#d9d9d9' }}>
+            <div>
+                <CustomNavbar />
+                <BarChart />
+                <PieChart />
+            </div>
         </div>
-    )
+    );
 }
 
 export default Stats;
