@@ -31,7 +31,8 @@ export function AuthProvider({ children }) {
             const userDocRef = doc(db, 'users', user.uid)
             await setDoc(userDocRef, {
                 email: user.email,
-                activities: []
+                activities: [],
+                todo: []
             })
 
             return userCredential;
