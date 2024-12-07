@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Calendar from '../components/Calendar';
 import { Modal, Form } from 'react-bootstrap'; // Import necessary Bootstrap components
 import { useUserContext } from '../contexts/UserContext';
+import CustomNavbar from '../components/CustomNavbar';
 
 export default function Calendars() {
   const { userData, updateUserData } = useUserContext();
@@ -36,6 +37,7 @@ export default function Calendars() {
 
   return (
     <>
+      <CustomNavbar />
       <Card>
         <Card.Body style={{ display: 'flex', alignItems: 'center' }}>
           <div style={{ width: '65vw' }}>
