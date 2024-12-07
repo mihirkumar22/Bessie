@@ -6,31 +6,38 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 // Register Chart.js components
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend, Title);
 
-const Stats = () => {
+const StatsBar = () => {
   // Mock data for the chart
   const mockData = [
-    { category: 'Work', hours: 40 },
-    { category: 'Exercise', hours: 5 },
-    { category: 'Leisure', hours: 20 },
-    { category: 'Learning', hours: 10 },
+    { category: 'Work', hours: 40, month: 12, day: 2, year: 2024 },
+    { category: 'Exercise', hours: 5, month: 12, day: 3, year: 2024 },
+    { category: 'Leisure', hours: 20, month: 12, day: 2, year: 2024 },
+    { category: 'Learning', hours: 10, month: 12, day: 2, year: 2024 },
   ];
 
   // Prepare data for the chart
-  const labels = mockData.map(item => item.category);
-  const data = mockData.map(item => item.hours);
+  const categories = [...new Set(mockData.map(item => item.category))]; // Unique activity categories
+  const labels = mockData.map(item => `${item.month}/${item.day}/${item.year}`);
+  
+  // Organize the data by date and activity category
+  const dataByDate = labels.map(date => {
+    return categories.map(category => {
+      const activity = mockData.find(item => `${item.month}/${item.day}/${item.year}` === date && item.category === category);
+      return activity ? activity.hours : 0; // Default to 0 if no activity for that date/category
+    });
+  });
+
   const backgroundColors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'];
 
   const chartData = {
-    labels: labels,
-    datasets: [
-      {
-        label: 'Hours Spent',
-        data: data,
-        backgroundColor: backgroundColors,
-        borderColor: backgroundColors.map(color => color.replace('0.2', '1')), // Darker borders
-        borderWidth: 1,
-      },
-    ],
+    labels: labels, // Dates as labels
+    datasets: categories.map((category, index) => ({
+      label: category,
+      data: dataByDate.map(data => data[index]),
+      backgroundColor: backgroundColors[index % backgroundColors.length],
+      borderColor: backgroundColors[index % backgroundColors.length].replace('0.2', '1'),
+      borderWidth: 1,
+    })),
   };
 
   const chartOptions = {
@@ -41,14 +48,14 @@ const Stats = () => {
       },
       title: {
         display: true,
-        text: 'Activities Breakdown by Hours',
+        text: 'Activities Breakdown by Date',
       },
     },
     scales: {
       x: {
         title: {
           display: true,
-          text: 'Categories',
+          text: 'Date',
         },
       },
       y: {
@@ -57,6 +64,7 @@ const Stats = () => {
           text: 'Hours',
         },
         beginAtZero: true,
+        stacked: true, // Enable stacking
       },
     },
   };
@@ -75,4 +83,4 @@ const Stats = () => {
   );
 };
 
-export default Stats;
+export default StatsBar;

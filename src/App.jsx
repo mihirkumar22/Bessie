@@ -5,7 +5,7 @@ import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
 import NotLoggedIn from './pages/NotLoggedIn';
 import ProtectedLayout from './components/ProtectedLayout';
-import Stats from './pages/Stats';
+import StatsBar from './pages/StatsBar';
 
 function App() {
   return (
@@ -17,7 +17,7 @@ function App() {
         <Route path="/not-logged-in" element={<NotLoggedIn />} />
         <Route element={<ProtectedLayout />}>
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/stats" element={<Stats />} />
+          <Route path="/stats-bar" element={<StatsBar />} />
 
         </Route>
       </Routes>
