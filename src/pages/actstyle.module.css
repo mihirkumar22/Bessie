@@ -1,0 +1,18 @@
+.noStyleButton {
+    background-color: transparent !important; /* Removes background */
+    border: none !important; /* Removes border */
+    color: inherit !important; /* Keeps text color consistent with parent */
+    padding: 0; /* Optional: Adjust padding for minimal appearance */
+    box-shadow: none !important; /* Removes Bootstrap focus ring */
+    cursor: pointer; /* Ensures it looks clickable */
+    transition: none !important; /* Removes hover transition effects */
+}
+
+.noStyleButton:hover,
+.noStyleButton:focus,
+.noStyleButton:active {
+    background-color: transparent !important; /* No background on hover */
+    color: inherit !important; /* Text color remains the same */
+    box-shadow: none !important; /* No hover focus ring */
+    outline: none; /* Removes focus outline */
+}

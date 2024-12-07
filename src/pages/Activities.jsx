@@ -7,6 +7,11 @@ import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup';
 import ToggleButton from 'react-bootstrap/ToggleButton';
 import { useUserContext } from '../contexts/UserContext';
 import CustomNavbar from '../components/CustomNavbar';
+import editicon from '../images/editbuttonpencil.png'
+import remove from '../images/removeact.png'
+import styles from './actstyle.module.css';
+
+
 
 function Activities() {
     const { userData, updateUserData, loading: userLoading } = useUserContext(); // Ensure loading state from context
@@ -139,8 +144,16 @@ function Activities() {
                                         <Card.Title>
                                             {activity.title}
                                         </Card.Title>
-                                        <Button onClick={() => handleEdit(activity.id)}>Edit</Button>
-                                        <Button onClick={() => handleDelete(activity.id)}>Delete</Button>
+                                        <Button onClick={() => handleEdit(activity.id)} className={styles.noStyleButton}> 
+                                            <div style={{display: 'flex'}}>
+                                                <img src={editicon} style={{ width: '20px', height: 'auto'}} alt="Logo" />
+                                            </div> 
+                                        </Button>
+                                        <Button onClick={() => handleDelete(activity.id)} className={styles.noStyleButton}> 
+                                            <div style={{display: 'flex'}}>
+                                                <img src={remove} style={{ width: '20px', height: 'auto'}} alt="Logo" />
+                                            </div>
+                                        </Button>
                                     </Card.Header>
                                     <Card.Text>
                                         Description: {activity.description}
