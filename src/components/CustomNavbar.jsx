@@ -7,36 +7,44 @@ import { useAuth } from '../contexts/AuthContext';
 import styles from './navstyle.module.css';
 import iconBessie from '../images/iconBessie.png';
 import leaveicon from '../images/exitsybmol.png';
-
+import { useState } from 'react';
+import { Collapse } from 'react-bootstrap';
 
 function CustomNavbar() {
     const { logout } = useAuth();
+    const [isNavOpen, setIsNavOpen] = useState(false);
 
     function handleLogout() {
         return logout();
     }
 
+    const toggleNav = () => setIsNavOpen(!isNavOpen);
+
     return (
-        <Navbar className={styles.stickyNavbar}>
+        <Navbar className={styles.stickyNavbar} expand="lg">
             <Container>
                 <div>
-                    <img src={iconBessie} style={{ width: '70px', height: 'auto', marginRight: '30px' }} alt="Example" />
+                    <img src={iconBessie} style={{ width: '70px', height: 'auto', marginRight: '30px' }} alt="Logo" />
                 </div>
 
-                <Navbar.Collapse className={styles.navCollapse}>
-                    <Nav className={styles.navOptions} style={{ fontSize: '2rem' }}>
-                        <Nav.Link href="/dashboard" className={styles.navItem}>Dashboard</Nav.Link>
-                        <Nav.Link href="/activities" className={styles.navItem}>Activities</Nav.Link>
-                        <Nav.Link href="/stats" className={styles.navItem}>Stats</Nav.Link>
-                    </Nav>
-                    <Button 
-                        className={styles.noStyleButton} 
-                        onClick={handleLogout} 
-                        style={{marginLeft: '750px'}}
-                    >
-                        <img src={leaveicon}  style={{ width: '70px', height: 'auto'}} alt="Example" />
-                    </Button>
-                </Navbar.Collapse>
+                <Navbar.Toggle aria-controls="navbar-nav" onClick={toggleNav} />
+                
+                <Collapse in={isNavOpen}>
+                    <Navbar.Collapse id="navbar-nav" className={styles.navCollapse}>
+                        <Nav className={styles.navOptions} style={{ fontSize: '2rem' }}>
+                            <Nav.Link href="/dashboard" className={styles.navItem}>Dashboard</Nav.Link>
+                            <Nav.Link href="/activities" className={styles.navItem}>Activities</Nav.Link>
+                            <Nav.Link href="/stats" className={styles.navItem}>Stats</Nav.Link>
+                        </Nav>
+                        <Button 
+                            className={styles.noStyleButton} 
+                            onClick={handleLogout} 
+                            style={{ marginLeft: 'auto' }}
+                        >
+                            <img src={leaveicon} style={{ width: '70px', height: 'auto'}} alt="Logout" />
+                        </Button>
+                    </Navbar.Collapse>
+                </Collapse>
             </Container>
         </Navbar>
     );
