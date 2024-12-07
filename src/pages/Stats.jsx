@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from 'chart.js';
-import { Pie } from 'react-chartjs-2';
+import React from 'react';
+import PieChart from '../components/PieChart';
+import BarChart from '../components/BarChart';
 import CustomNavbar from '../components/CustomNavbar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 

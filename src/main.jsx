@@ -4,7 +4,7 @@ import { StrictMode } from 'react'
 import App from './App.jsx'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { AuthProvider } from './contexts/AuthContext'
-import { UserProvider } from './contexts/UserContext.jsx'
+import { UserProvider } from './contexts/UserContext'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
