@@ -10,10 +10,10 @@ ChartJS.register(ArcElement, Tooltip, Legend, Title);
 const Stats = () => {
   // Mock data for the chart
   const mockData = [
-    { category: 'Work', hours: 40, month: 12, day: 2, year: 2024 },
-    { category: 'Exercise', hours: 5, month: 12, day: 3, year: 2024 },
-    { category: 'Leisure', hours: 20, month: 12, day: 2, year: 2024 },
-    { category: 'Learning', hours: 10, month: 12, day: 2, year: 2024 },
+    { category: 'Work', hours: 40 },
+    { category: 'Exercise', hours: 5 },
+    { category: 'Leisure', hours: 20 },
+    { category: 'Learning', hours: 10 },
   ];
 
   // State for the selected time period
@@ -25,17 +25,8 @@ const Stats = () => {
   };
 
   // Prepare data for the chart
-  const categories = [...new Set(mockData.map(item => item.category))]; // Unique activity categories
-  const labels = mockData.map(item => `${item.month}/${item.day}/${item.year}`);
-  
-  // Organize the data by date and activity category
-  const dataByDate = labels.map(date => {
-    return categories.map(category => {
-      const activity = mockData.find(item => `${item.month}/${item.day}/${item.year}` === date && item.category === category);
-      return activity ? activity.hours : 0; // Default to 0 if no activity for that date/category
-    });
-  });
-
+  const labels = mockData.map(item => item.category);
+  const data = mockData.map(item => item.hours);
   const backgroundColors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'];
 
   const chartData = {
@@ -45,8 +36,6 @@ const Stats = () => {
         label: 'Hours Spent',
         data: data,
         backgroundColor: backgroundColors,
-        borderColor: backgroundColors.map(color => color.replace('0.2', '1')), // Darker borders
-        borderWidth: 1,
       },
     ],
   };
@@ -59,22 +48,7 @@ const Stats = () => {
       },
       title: {
         display: true,
-        text: 'Activities Breakdown by Hours',
-      },
-    },
-    scales: {
-      x: {
-        title: {
-          display: true,
-          text: 'Categories',
-        },
-      },
-      y: {
-        title: {
-          display: true,
-          text: 'Hours',
-        },
-        beginAtZero: true,
+        text: `Your activities in the last ${timePeriod}`, // Dynamic title based on timePeriod
       },
     },
   };
