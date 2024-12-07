@@ -110,6 +110,7 @@ const PieChart = () => {
           className="form-select"
           value={timePeriod}
           onChange={handleTimePeriodChange}
+          style = {{ backgroundColor: '#eeeaea' }}
         >
           <option value="7 days">Last 7 days</option>
           <option value="30 days">Last 30 days</option>
