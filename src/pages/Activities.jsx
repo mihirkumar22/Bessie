@@ -22,6 +22,7 @@ function Activities() {
         duration: '',
         date: '',
     });
+    const [editing, setEditing] = useState(null);
 
     // Update activities when userData changes
     useEffect(() => {
@@ -57,17 +58,29 @@ function Activities() {
         setLoading(true);
 
         try {
-            const newActivity = {
-                ...formData,
-                id: new Date().toISOString(), // Generate unique ID
-            };
+            let updatedActivities;
+
+            if (editing) {
+                // If editing, find the activity by its id and update it
+                updatedActivities = activities.map((activity) =>
+                    activity.id === formData.id ? { ...activity, ...formData } : activity
+                );
+            } else {
+                // If not editing, create a new activity and append it
+                const newActivity = {
+                    ...formData,
+                    id: new Date().toISOString(), // Generate a unique ID
+                };
+                updatedActivities = [...activities, newActivity];
+            }
 
             const updatedUserData = {
                 ...userData,
-                activities: [...activities, newActivity], // Append new activity
+                activities: updatedActivities, // Set the updated activities list
             };
 
-            await updateUserData(updatedUserData);
+            await updateUserData(updatedUserData); // Update user data
+
         } catch (error) {
             console.error('Error updating user data:', error);
         } finally {
@@ -75,6 +88,31 @@ function Activities() {
             handleClose();
         }
     };
+
+    function handleEdit(activityId) {
+        setEditing(true);
+        handleShow();
+        const activityData = activities.find(activity => activity.id === activityId);
+
+        if (activityData) {
+            setFormData(activityData);  // Assuming setFormData is used to populate the form
+        } else {
+            console.log("Activity not found");
+        }
+    }
+
+    function handleDelete(activityId) {
+        const confirmDelete = window.confirm("Are you sure you want to delete this posting?")
+        if (confirmDelete) {
+            const updatedActivities = activities.filter(activity => activity.id !== activityId);
+
+            const updatedUserData = {
+                ...userData,
+                activities: updatedActivities
+            }
+            updateUserData(updatedUserData);
+        }
+    }
 
     if (userLoading) {
         return <div>Loading user data...</div>; // Show a loading message while userData is being fetched
@@ -91,12 +129,25 @@ function Activities() {
 
             <Card>
                 <Card.Body>
-                    <Button onClick={handleShow}>+ Add Activity</Button>
+                    <Button onClick={() => { handleShow(); setEditing(false); }}>+ Add Activity</Button>
                     <Card.Title>Activities</Card.Title>
                     {activities.length > 0 ? (
                         activities.map((activity) => (
                             <Card key={activity.id}>
-                                {activity.tag} - {activity.title}
+                                <Card.Body>
+                                    <Card.Header>
+                                        <Card.Title>
+                                            {activity.title}
+                                        </Card.Title>
+                                        <Button onClick={() => handleEdit(activity.id)}>Edit</Button>
+                                        <Button onClick={() => handleDelete(activity.id)}>Delete</Button>
+                                    </Card.Header>
+                                    <Card.Text>
+                                        Description: {activity.description}
+                                        <br></br>
+                                        Date: {activity.date}
+                                    </Card.Text>
+                                </Card.Body>
                             </Card>
                         ))
                     ) : (

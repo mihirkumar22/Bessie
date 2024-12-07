@@ -21,9 +21,8 @@
 
 /* Nav item hover effect */
 .navItem {
-    font-size: 1.25rem;
+    font-size: 2rem;
     text-decoration: none;
-    text-decoration: underline;
     color: black;
     padding: 5px 10px;
     border-radius: 5px;
