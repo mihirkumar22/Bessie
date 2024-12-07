@@ -3,6 +3,8 @@ import Card from 'react-bootstrap/Card'
 import CustomNavbar from '../components/CustomNavbar';
 
 function Dashboard() {
+    
+    
     return (
         <div>
             <CustomNavbar />

@@ -5,6 +5,7 @@ import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
 import NotLoggedIn from './pages/NotLoggedIn';
 import ProtectedLayout from './components/ProtectedLayout';
+import Activities from './pages/Activities';
 
 function App() {
   return (
@@ -14,8 +15,10 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/not-logged-in" element={<NotLoggedIn />} />
+        
         <Route element={<ProtectedLayout />}>
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/activities" element={<Activities />} />
         </Route>
       </Routes>
     </BrowserRouter>
