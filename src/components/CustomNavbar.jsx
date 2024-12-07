@@ -19,6 +19,7 @@ function CustomNavbar() {
                 <Navbar.Collapse>
                     <Nav>
                         <Nav.Link href="/dashboard">Dashboard</Nav.Link>
+                        <Nav.Link href="/stats"> Stats</Nav.Link>
                         <Button onClick={handleLogout}>Logout</Button>
                     </Nav>
                 </Navbar.Collapse>
