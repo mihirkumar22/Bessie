@@ -16,7 +16,7 @@ function Dashboard() {
                     display: 'flex',
                     flexDirection: 'column', // Stack the elements vertically
                     justifyContent: 'center',
-                    alignItems: 'center',
+                    //alignItems: 'center',
                     height: '100vh',
                     gap: '1px' // Controls the space between the two divs
                 }}
@@ -32,7 +32,7 @@ function Dashboard() {
                         fontSize: '4rem',
                         color: 'black',
                         textAlign: 'center',
-                        alignItems: 'center'
+                        //alignItems: 'center'
                     }}
                 >
                     <strong> {currentUser?.email || 'No email found'} </strong> 
