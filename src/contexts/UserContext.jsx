@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { doc, getDoc, onSnapshot, updateDoc } from 'firebase/firestore'
+import { doc, getDoc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useAuth } from './AuthContext';
 
@@ -15,30 +15,38 @@ export function UserProvider({ children }) {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        let unsubscribe;
+        let unsubscribe = null;
 
         async function setupListener() {
-            if (currentUser) {
-                const userDocRef = doc(db, 'users', currentUser.uid);
-                
-                const docSnapshot = await getDoc(userDocRef);
+            try {
+                if (currentUser) {
+                    const userDocRef = doc(db, 'users', currentUser.uid);
 
-                if (docSnapshot.exists()) {
-                    unsubscribe = onSnapshot(userDocRef, (snapshot) => {
-                        if (snapshot.exists()) {
-                            setUserData(snapshot.data());
-                        } else {
-                            console.error('no user document found');
-                            setUserData(null);
-                        }
+                    // Check if user document exists
+                    const docSnapshot = await getDoc(userDocRef);
+                    if (docSnapshot.exists()) {
+                        // Listen for real-time updates
+                        unsubscribe = onSnapshot(userDocRef, (snapshot) => {
+                            if (snapshot.exists()) {
+                                setUserData(snapshot.data());
+                            } else {
+                                console.warn('User document no longer exists');
+                                setUserData(null);
+                            }
+                            setLoading(false); // Data loaded
+                        });
+                    } else {
+                        console.warn('User document not found');
+                        setUserData(null);
                         setLoading(false);
-                    })
+                    }
                 } else {
+                    // No user signed in
                     setUserData(null);
                     setLoading(false);
                 }
-                
-            } else {
+            } catch (error) {
+                console.error('Error setting up Firestore listener:', error);
                 setUserData(null);
                 setLoading(false);
             }
@@ -46,16 +54,22 @@ export function UserProvider({ children }) {
 
         setupListener();
 
-        return () => unsubscribe && unsubscribe();
-    }, [currentUser])
+        // Cleanup subscription on unmount
+        return () => {
+            if (unsubscribe) unsubscribe();
+        };
+    }, [currentUser]);
 
     async function updateUserData(updates) {
+        if (!currentUser) {
+            throw new Error('No user is signed in.');
+        }
         try {
             const userDocRef = doc(db, 'users', currentUser.uid);
             await updateDoc(userDocRef, updates);
         } catch (error) {
-            console.error("failed to update user data", error);
-            throw new Error('Could not update user data. Please try again later')
+            console.error('Failed to update user data:', error);
+            throw new Error('Could not update user data. Please try again later.');
         }
     }
 
@@ -63,11 +77,11 @@ export function UserProvider({ children }) {
         userData,
         loading,
         updateUserData,
-    }
+    };
 
     return (
         <UserContext.Provider value={value}>
             {!loading && children}
         </UserContext.Provider>
-    )
+    );
 }

@@ -1,31 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend, Title } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useUserContext } from '../contexts/UserContext';
 
 // Register Chart.js components
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend, Title);
 
 const BarChart = () => {
-  // Mock data for the chart
-  const mockData = [
-    { category: 'Work', hours: 8, month: 12, day: 1, year: 2024 },
-    { category: 'Exercise', hours: 1, month: 12, day: 1, year: 2024 },
-    { category: 'Leisure', hours: 3, month: 12, day: 1, year: 2024 },
-    { category: 'Learning', hours: 2, month: 12, day: 1, year: 2024 },
+  const { userData } = useUserContext();
+  const [activities, setActivities] = useState([]);
 
-    { category: 'Work', hours: 7, month: 12, day: 2, year: 2024 },
-    { category: 'Exercise', hours: 2, month: 12, day: 2, year: 2024 },
-    { category: 'Leisure', hours: 2, month: 12, day: 2, year: 2024 },
-    { category: 'Learning', hours: 3, month: 12, day: 2, year: 2024 },
-
-    { category: 'Work', hours: 9, month: 12, day: 3, year: 2024 },
-    { category: 'Exercise', hours: 1, month: 12, day: 3, year: 2024 },
-    { category: 'Leisure', hours: 2, month: 12, day: 3, year: 2024 },
-    { category: 'Learning', hours: 2, month: 12, day: 3, year: 2024 },
-
-    // more data here...
-  ];
+  // Fetch activities from userData
+  useEffect(() => {
+    if (userData?.activities) {
+      setActivities(userData.activities);
+    }
+  }, [userData]);
 
   // State for the selected time period
   const [timePeriod, setTimePeriod] = useState("30 days");
@@ -35,83 +26,86 @@ const BarChart = () => {
     setTimePeriod(e.target.value);
   };
 
-  // Get the current date and time
-  const now = new Date();
-
   // Function to calculate the date range for the selected time period
   const getDateRange = () => {
-    let startDate;
+    const startDate = new Date(); // Create a fresh copy of the current date
     switch (timePeriod) {
       case "7 days":
-        startDate = new Date(now.setDate(now.getDate() - 7));
+        startDate.setDate(startDate.getDate() - 7);
         break;
       case "30 days":
-        startDate = new Date(now.setDate(now.getDate() - 30));
+        startDate.setDate(startDate.getDate() - 30);
         break;
       case "1 month":
-        startDate = new Date(now.setMonth(now.getMonth() - 1));
+        startDate.setMonth(startDate.getMonth() - 1);
         break;
       case "3 months":
-        startDate = new Date(now.setMonth(now.getMonth() - 3));
+        startDate.setMonth(startDate.getMonth() - 3);
         break;
       case "6 months":
-        startDate = new Date(now.setMonth(now.getMonth() - 6));
+        startDate.setMonth(startDate.getMonth() - 6);
         break;
       case "1 year":
-        startDate = new Date(now.setFullYear(now.getFullYear() - 1));
+        startDate.setFullYear(startDate.getFullYear() - 1);
         break;
       default:
-        startDate = now;
+        break;
     }
     return startDate;
   };
 
   // Filter the data based on the selected time period
-  const filteredData = mockData.filter(item => {
-    const itemDate = new Date(item.year, item.month - 1, item.day); // Create Date object from item data
-    const startDate = getDateRange();
-    return itemDate >= startDate; // Keep only the items that are within the selected range
+  const filteredData = activities.filter((item) => {
+    const [year, month, day] = item.date.split("-").map(Number);
+    const itemDate = new Date(year, month - 1, day);
+    return itemDate >= getDateRange();
   });
 
   // Combine hours for the same category per day
   const combinedData = filteredData.reduce((acc, item) => {
-    const dateKey = `${item.year}-${item.month}-${item.day}`; // Use year, month, and day as the key
+    const [year, month, day] = item.date.split("-").map(Number);
+    const dateKey = `${year}-${month}-${day}`;
+  
+    // Initialize categories with lowercase keys
     if (!acc[dateKey]) {
-      acc[dateKey] = { 'Work': 0, 'Exercise': 0, 'Leisure': 0, 'Learning': 0 }; // Initialize categories
+      acc[dateKey] = { exercise: 0, recreation: 0, education: 0 };
     }
-    acc[dateKey][item.category] += item.hours; // Accumulate hours for each category
+  
+    // Normalize the tag to lowercase and ensure the duration is treated as a number
+    const normalizedTag = item.tag.toLowerCase();
+    const duration = parseFloat(item.duration); // Convert duration to number
+  
+    // Check if the tag exists in the initialized object
+    if (normalizedTag in acc[dateKey]) {
+      acc[dateKey][normalizedTag] += duration; // Accumulate hours
+    }
+  
     return acc;
   }, {});
 
   // Prepare data for the chart
-  const dates = Object.keys(combinedData); // All unique dates (e.g., '2024-12-01')
-  const workHours = dates.map(date => combinedData[date]['Work']);
-  const exerciseHours = dates.map(date => combinedData[date]['Exercise']);
-  const leisureHours = dates.map(date => combinedData[date]['Leisure']);
-  const learningHours = dates.map(date => combinedData[date]['Learning']);
+  const dates = Object.keys(combinedData); // All unique dates
+  const recreationHours = dates.map((date) => combinedData[date]["recreation"] || 0);
+  const exerciseHours = dates.map((date) => combinedData[date]["exercise"] || 0);
+  const educationHours = dates.map((date) => combinedData[date]["education"] || 0);
 
   const chartData = {
     labels: dates, // Dates for the X axis
     datasets: [
       {
-        label: 'Work',
-        data: workHours,
-        backgroundColor: '#FF6384',
+        label: "Recreation",
+        data: recreationHours,
+        backgroundColor: "#FFCE56",
       },
       {
-        label: 'Exercise',
+        label: "Exercise",
         data: exerciseHours,
-        backgroundColor: '#36A2EB',
+        backgroundColor: "#36A2EB",
       },
       {
-        label: 'Leisure',
-        data: leisureHours,
-        backgroundColor: '#FFCE56',
-      },
-      {
-        label: 'Learning',
-        data: learningHours,
-        backgroundColor: '#4BC0C0',
+        label: "Education",
+        data: educationHours,
+        backgroundColor: "#FF6384",
       },
     ],
   };
@@ -120,7 +114,7 @@ const BarChart = () => {
     responsive: true,
     plugins: {
       legend: {
-        position: 'top',
+        position: "top",
       },
       title: {
         display: true,
@@ -131,13 +125,13 @@ const BarChart = () => {
       x: {
         title: {
           display: true,
-          text: 'Date',
+          text: "Date",
         },
       },
       y: {
         title: {
           display: true,
-          text: 'Hours',
+          text: "Hours",
         },
         beginAtZero: true,
       },
@@ -168,7 +162,7 @@ const BarChart = () => {
 
       {/* Bar Chart */}
       <div className="d-flex justify-content-center">
-        <div style={{ width: '70%' }}>
+        <div style={{ width: "70%" }}>
           <Bar data={chartData} options={chartOptions} />
         </div>
       </div>
