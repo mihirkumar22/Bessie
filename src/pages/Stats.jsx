@@ -1,9 +1,10 @@
 import React from 'react';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from 'chart.js';
-import { Pie } from 'react-chartjs-2';
+import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend, Title } from 'chart.js';
+import { Bar } from 'react-chartjs-2';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-ChartJS.register(ArcElement, Tooltip, Legend, Title);
+// Register Chart.js components
+ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend, Title);
 
 const Stats = () => {
   // Mock data for the chart
@@ -26,6 +27,8 @@ const Stats = () => {
         label: 'Hours Spent',
         data: data,
         backgroundColor: backgroundColors,
+        borderColor: backgroundColors.map(color => color.replace('0.2', '1')), // Darker borders
+        borderWidth: 1,
       },
     ],
   };
@@ -34,18 +37,26 @@ const Stats = () => {
     responsive: true,
     plugins: {
       legend: {
-        position: 'bottom',
-      },
-      tooltip: {
-        callbacks: {
-          label: function (tooltipItem) {
-            return `${tooltipItem.label}: ${tooltipItem.raw} hours`;
-          },
-        },
+        position: 'top',
       },
       title: {
         display: true,
         text: 'Activities Breakdown by Hours',
+      },
+    },
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Categories',
+        },
+      },
+      y: {
+        title: {
+          display: true,
+          text: 'Hours',
+        },
+        beginAtZero: true,
       },
     },
   };
@@ -54,10 +65,10 @@ const Stats = () => {
     <div className="container mt-5">
       <h1 className="text-center mb-4">Activity Stats</h1>
 
-      {/* Pie Chart */}
+      {/* Bar Chart */}
       <div className="d-flex justify-content-center">
-        <div style={{ width: '50%' }}>
-          <Pie data={chartData} options={chartOptions} />
+        <div style={{ width: '70%' }}>
+          <Bar data={chartData} options={chartOptions} />
         </div>
       </div>
     </div>
