@@ -83,14 +83,15 @@ const BarChart = () => {
     return acc;
   }, {});
 
-  console.log(combinedData);
-
   // Sort dates in descending order (most recent first)
   const sortedDates = Object.keys(combinedData).sort((a, b) => {
-    const dateA = new Date(a);
-    const dateB = new Date(b);
+    // Ensure date format is consistent before comparing
+    const dateA = new Date(a + 'T00:00:00'); // Append time for consistency
+    const dateB = new Date(b + 'T00:00:00'); // Append time for consistency
     return dateB - dateA; // Compare dates in descending order
   });
+
+
 
   // Prepare the data for the chart with the sorted dates
   const recreationHours = sortedDates.map((date) => combinedData[date]["recreation"] || 0);
