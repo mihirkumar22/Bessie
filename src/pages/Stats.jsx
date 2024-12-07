@@ -7,7 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 // Register Chart.js components
 ChartJS.register(ArcElement, Tooltip, Legend, Title);
 
-const StatsBar = () => {
+const Stats = () => {
   // Mock data for the chart
   const mockData = [
     { category: 'Work', hours: 40, month: 12, day: 2, year: 2024 },
@@ -113,4 +113,4 @@ const StatsBar = () => {
   );
 };
 
-export default StatsBar;
+export default Stats;
