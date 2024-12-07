@@ -54,9 +54,12 @@ const Stats = () => {
   };
 
   return (
-  
+
+    <> 
+    <CustomNavbar /> 
+    
     <div className="container mt-5">
-      <CustomNavbar />
+      
       <h1 className="text-center mb-4">Activity Stats</h1>
 
       {/* Dropdown for selecting time period */}
@@ -84,6 +87,7 @@ const Stats = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
