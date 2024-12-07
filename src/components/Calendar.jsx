@@ -5,9 +5,9 @@ import dayGridPlugin from '@fullcalendar/daygrid'; // FullCalendar day grid plug
 export default function Calendar({ userData }) {
   // Convert userData.todo items into events format
   const events = userData?.todo.map((todoItem) => ({
-    title: todoItem.name, // Use the name of the to-do item
-    date: todoItem.date,   // Date of the to-do item
-    color: todoItem.color, // Color associated with the to-do item
+    title: todoItem.name,  // Use the name of the to-do item
+    date: todoItem.date,    // Date of the to-do item
+    color: todoItem.color,  // Color associated with the to-do item
   }));
 
   return (
