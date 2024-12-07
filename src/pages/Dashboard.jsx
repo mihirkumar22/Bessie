@@ -9,7 +9,7 @@ import { useAuth } from '../contexts/AuthContext'; // Assuming you have this con
 function Dashboard() {
     const { currentUser } = useAuth(); // Get current user from AuthContext
     return (
-        <div style={{ backgroundImage: `url(${background})`, backgroundSize: 'cover', backgroundPosition: 'center', height: '100vh' }}>
+        <div style={{ backgroundImage: `url(${background})`, backgroundSize: 'cover', backgroundPosition: 'center',  }}>
             <CustomNavbar />
             <div
                 style={{

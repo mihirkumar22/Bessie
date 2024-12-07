@@ -7,7 +7,7 @@ function Stats() {
     return (
 
         <div>
-            <div style={{ width: '50%' }}>
+            <div style={{ backgroundColor: '#d9d9d9' }}>
             <CustomNavbar />
             <BarChart />
             <PieChart />

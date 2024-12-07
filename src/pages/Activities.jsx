@@ -6,6 +6,7 @@ import Form from 'react-bootstrap/Form'
 import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup'
 import ToggleButton from 'react-bootstrap/ToggleButton'
 import { useUserContext } from '../contexts/UserContext';
+import CustomNavbar from '../components/CustomNavbar';
 
 
 function Activities() {
@@ -73,7 +74,10 @@ function Activities() {
     };
 
     return (
+
         <>
+            <CustomNavbar />
+
             <Card>
                 <Card.Body>
                     <Button
