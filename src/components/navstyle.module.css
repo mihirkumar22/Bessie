@@ -1,0 +1,53 @@
+/* Make navbar sticky at the top */
+.stickyNavbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: #fdf7cb; /* White background */
+    box-shadow: 0 2px 5px rgba(0, 0, 10, 0.1); /* Optional shadow for better visibility */
+}
+
+/* Brand styles */
+.brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Nav options container */
+.navOptions {
+    display: flex;
+    gap: 20px;
+}
+
+/* Nav item hover effect */
+.navItem {
+    font-size: 1.25rem;
+    text-decoration: none;
+    text-decoration: underline;
+    color: black;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    
+
+
+}
+
+.noStyleButton {
+    background-color: transparent !important; /* Removes background */
+    border: none !important; /* Removes border */
+    color: inherit !important; /* Keeps text color consistent with parent */
+    padding: 0; /* Optional: Adjust padding for minimal appearance */
+    box-shadow: none !important; /* Removes Bootstrap focus ring */
+    cursor: pointer; /* Ensures it looks clickable */
+    transition: none !important; /* Removes hover transition effects */
+}
+
+.noStyleButton:hover,
+.noStyleButton:focus,
+.noStyleButton:active {
+    background-color: transparent !important; /* No background on hover */
+    color: inherit !important; /* Text color remains the same */
+    box-shadow: none !important; /* No hover focus ring */
+    outline: none; /* Removes focus outline */
+}
