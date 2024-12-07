@@ -8,120 +8,81 @@ ChartJS.register(ArcElement, Tooltip, Legend, Title);
 
 const PieChart = () => {
   const mockData = [
-    { category: 'Work', hours: 8, month: 12, day: 1, year: 2024 },
-    { category: 'Exercise', hours: 1, month: 12, day: 1, year: 2024 },
-    { category: 'Leisure', hours: 3, month: 12, day: 1, year: 2024 },
-    { category: 'Learning', hours: 2, month: 12, day: 1, year: 2024 },
-    
-    { category: 'Work', hours: 7, month: 12, day: 2, year: 2024 },
-    { category: 'Exercise', hours: 2, month: 12, day: 2, year: 2024 },
-    { category: 'Leisure', hours: 2, month: 12, day: 2, year: 2024 },
-    { category: 'Learning', hours: 3, month: 12, day: 2, year: 2024 },
-    
-    { category: 'Work', hours: 9, month: 12, day: 3, year: 2024 },
-    { category: 'Exercise', hours: 1, month: 12, day: 3, year: 2024 },
-    { category: 'Leisure', hours: 2, month: 12, day: 3, year: 2024 },
-    { category: 'Learning', hours: 2, month: 12, day: 3, year: 2024 },
-  
-    { category: 'Work', hours: 8, month: 12, day: 4, year: 2024 },
-    { category: 'Exercise', hours: 3, month: 12, day: 4, year: 2024 },
-    { category: 'Leisure', hours: 1, month: 12, day: 4, year: 2024 },
-    { category: 'Learning', hours: 2, month: 12, day: 4, year: 2024 },
-    
-    { category: 'Work', hours: 7, month: 12, day: 5, year: 2024 },
-    { category: 'Exercise', hours: 2, month: 12, day: 5, year: 2024 },
-    { category: 'Leisure', hours: 2, month: 12, day: 5, year: 2024 },
-    { category: 'Learning', hours: 3, month: 12, day: 5, year: 2024 },
-  
-    { category: 'Work', hours: 8, month: 12, day: 6, year: 2024 },
-    { category: 'Exercise', hours: 2, month: 12, day: 6, year: 2024 },
-    { category: 'Leisure', hours: 3, month: 12, day: 6, year: 2024 },
-    { category: 'Learning', hours: 2, month: 12, day: 6, year: 2024 },
-    
-    { category: 'Work', hours: 7, month: 12, day: 7, year: 2024 },
-    { category: 'Exercise', hours: 1, month: 12, day: 7, year: 2024 },
-    { category: 'Leisure', hours: 2, month: 12, day: 7, year: 2024 },
-    { category: 'Learning', hours: 3, month: 12, day: 7, year: 2024 },
-  
-    { category: 'Work', hours: 9, month: 12, day: 8, year: 2024 },
-    { category: 'Exercise', hours: 1, month: 12, day: 8, year: 2024 },
-    { category: 'Leisure', hours: 3, month: 12, day: 8, year: 2024 },
-    { category: 'Learning', hours: 2, month: 12, day: 8, year: 2024 },
-  
-    { category: 'Work', hours: 8, month: 12, day: 9, year: 2024 },
-    { category: 'Exercise', hours: 2, month: 12, day: 9, year: 2024 },
-    { category: 'Leisure', hours: 2, month: 12, day: 9, year: 2024 },
-    { category: 'Learning', hours: 3, month: 12, day: 9, year: 2024 },
-    
-    { category: 'Work', hours: 9, month: 12, day: 10, year: 2024 },
-    { category: 'Exercise', hours: 1, month: 12, day: 10, year: 2024 },
-    { category: 'Leisure', hours: 3, month: 12, day: 10, year: 2024 },
-    { category: 'Learning', hours: 2, month: 12, day: 10, year: 2024 },
-  
-    { category: 'Work', hours: 8, month: 12, day: 11, year: 2024 },
-    { category: 'Exercise', hours: 2, month: 12, day: 11, year: 2024 },
-    { category: 'Leisure', hours: 1, month: 12, day: 11, year: 2024 },
-    { category: 'Learning', hours: 3, month: 12, day: 11, year: 2024 },
-  
-    { category: 'Work', hours: 7, month: 12, day: 12, year: 2024 },
-    { category: 'Exercise', hours: 2, month: 12, day: 12, year: 2024 },
-    { category: 'Leisure', hours: 3, month: 12, day: 12, year: 2024 },
-    { category: 'Learning', hours: 2, month: 12, day: 12, year: 2024 },
-  
-    { category: 'Work', hours: 8, month: 12, day: 13, year: 2024 },
-    { category: 'Exercise', hours: 1, month: 12, day: 13, year: 2024 },
-    { category: 'Leisure', hours: 3, month: 12, day: 13, year: 2024 },
-    { category: 'Learning', hours: 2, month: 12, day: 13, year: 2024 },
-  
-    { category: 'Work', hours: 9, month: 12, day: 14, year: 2024 },
-    { category: 'Exercise', hours: 2, month: 12, day: 14, year: 2024 },
-    { category: 'Leisure', hours: 1, month: 12, day: 14, year: 2024 },
-    { category: 'Learning', hours: 3, month: 12, day: 14, year: 2024 },
-  
-    { category: 'Work', hours: 8, month: 12, day: 15, year: 2024 },
-    { category: 'Exercise', hours: 2, month: 12, day: 15, year: 2024 },
-    { category: 'Leisure', hours: 3, month: 12, day: 15, year: 2024 },
-    { category: 'Learning', hours: 2, month: 12, day: 15, year: 2024 },
-  
-    { category: 'Work', hours: 9, month: 12, day: 16, year: 2024 },
-    { category: 'Exercise', hours: 2, month: 12, day: 16, year: 2024 },
-    { category: 'Leisure', hours: 2, month: 12, day: 16, year: 2024 },
-    { category: 'Learning', hours: 2, month: 12, day: 16, year: 2024 },
-  
-    { category: 'Work', hours: 8, month: 12, day: 17, year: 2024 },
-    { category: 'Exercise', hours: 1, month: 12, day: 17, year: 2024 },
-    { category: 'Leisure', hours: 3, month: 12, day: 17, year: 2024 },
-    { category: 'Learning', hours: 2, month: 12, day: 17, year: 2024 },
-  
-    { category: 'Work', hours: 7, month: 12, day: 18, year: 2024 },
-    { category: 'Exercise', hours: 2, month: 12, day: 18, year: 2024 },
-    { category: 'Leisure', hours: 2, month: 12, day: 18, year: 2024 },
-    { category: 'Learning', hours: 3, month: 12, day: 18, year: 2024 },
-  
-    { category: 'Work', hours: 9, month: 12, day: 19, year: 2024 },
-    { category: 'Exercise', hours: 2, month: 12, day: 19, year: 2024 },
-    { category: 'Leisure', hours: 2, month: 12, day: 19, year: 2024 },
-    { category: 'Learning', hours: 2, month: 12, day: 19, year: 2024 },
-  
-    { category: 'Work', hours: 8, month: 12, day: 20, year: 2024 },
-    { category: 'Exercise', hours: 1, month: 12, day: 20, year: 2024 },
-    { category: 'Leisure', hours: 3, month: 12, day: 20, year: 2024 },
-    { category: 'Learning', hours: 2, month: 12, day: 20, year: 2024 },
-  
-    { category: 'Work', hours: 7, month: 12, day: 21, year: 2024 },
-    { category: 'Exercise', hours: 2, month: 12, day: 21, year: 2024 },
-    { category: 'Leisure', hours: 2, month: 12, day: 21, year: 2024 },
-    { category: 'Learning', hours: 3, month: 12, day: 21, year: 2024 },
-  
-    { category: 'Work', hours: 8, month: 12, day: 22, year: 2024 },
-    { category: 'Exercise', hours: 1, month: 12, day: 22, year: 2024 },
-    { category: 'Leisure', hours: 3, month: 12, day: 22, year: 2024 },
-    { category: 'Learning', hours: 2, month: 12, day: 22, year: 2024 },
-  
-    { category: 'Work', hours: 9, month: 12, day: 23, year: 2024 },
-    { category: 'Exercise', hours: 2, month: 12, day: 23, year: 2024 },
-    { category: 'Leisure', hours: 2, month: 12, day: 23, year: 2024 },
-    { category: 'Learning', hours: 2, month: 12, day: 23, year: 2024 },
+    { category: 'Work', hours: 8, month: 7, day: 1, year: 2024 },
+    { category: 'Exercise', hours: 1, month: 7, day: 1, year: 2024 },
+    { category: 'Leisure', hours: 3, month: 7, day: 1, year: 2024 },
+    { category: 'Learning', hours: 2, month: 7, day: 1, year: 2024 },
+
+    { category: 'Work', hours: 7, month: 11, day: 2, year: 2024 },
+    { category: 'Exercise', hours: 2, month: 11, day: 2, year: 2024 },
+    { category: 'Leisure', hours: 2, month: 11, day: 2, year: 2024 },
+    { category: 'Learning', hours: 3, month: 11, day: 2, year: 2024 },
+
+    { category: 'Work', hours: 9, month: 3, day: 3, year: 2024 },
+    { category: 'Exercise', hours: 1, month: 3, day: 3, year: 2024 },
+    { category: 'Leisure', hours: 2, month: 3, day: 3, year: 2024 },
+    { category: 'Learning', hours: 2, month: 3, day: 3, year: 2024 },
+
+    { category: 'Work', hours: 8, month: 5, day: 4, year: 2024 },
+    { category: 'Exercise', hours: 3, month: 5, day: 4, year: 2024 },
+    { category: 'Leisure', hours: 1, month: 5, day: 4, year: 2024 },
+    { category: 'Learning', hours: 2, month: 5, day: 4, year: 2024 },
+
+    { category: 'Work', hours: 7, month: 9, day: 5, year: 2024 },
+    { category: 'Exercise', hours: 2, month: 9, day: 5, year: 2024 },
+    { category: 'Leisure', hours: 2, month: 9, day: 5, year: 2024 },
+    { category: 'Learning', hours: 3, month: 9, day: 5, year: 2024 },
+
+    { category: 'Work', hours: 8, month: 1, day: 6, year: 2024 },
+    { category: 'Exercise', hours: 2, month: 1, day: 6, year: 2024 },
+    { category: 'Leisure', hours: 3, month: 1, day: 6, year: 2024 },
+    { category: 'Learning', hours: 2, month: 1, day: 6, year: 2024 },
+
+    { category: 'Work', hours: 9, month: 6, day: 7, year: 2024 },
+    { category: 'Exercise', hours: 2, month: 6, day: 7, year: 2024 },
+    { category: 'Leisure', hours: 1, month: 6, day: 7, year: 2024 },
+    { category: 'Learning', hours: 3, month: 6, day: 7, year: 2024 },
+
+    { category: 'Work', hours: 8, month: 3, day: 8, year: 2024 },
+    { category: 'Exercise', hours: 1, month: 3, day: 8, year: 2024 },
+    { category: 'Leisure', hours: 3, month: 3, day: 8, year: 2024 },
+    { category: 'Learning', hours: 2, month: 3, day: 8, year: 2024 },
+
+    { category: 'Work', hours: 7, month: 11, day: 9, year: 2024 },
+    { category: 'Exercise', hours: 1, month: 11, day: 9, year: 2024 },
+    { category: 'Leisure', hours: 2, month: 11, day: 9, year: 2024 },
+    { category: 'Learning', hours: 3, month: 11, day: 9, year: 2024 },
+
+    { category: 'Work', hours: 9, month: 5, day: 10, year: 2024 },
+    { category: 'Exercise', hours: 2, month: 5, day: 10, year: 2024 },
+    { category: 'Leisure', hours: 2, month: 5, day: 10, year: 2024 },
+    { category: 'Learning', hours: 2, month: 5, day: 10, year: 2024 },
+
+    { category: 'Work', hours: 8, month: 9, day: 11, year: 2024 },
+    { category: 'Exercise', hours: 2, month: 9, day: 11, year: 2024 },
+    { category: 'Leisure', hours: 3, month: 9, day: 11, year: 2024 },
+    { category: 'Learning', hours: 2, month: 9, day: 11, year: 2024 },
+
+    { category: 'Work', hours: 7, month: 6, day: 12, year: 2024 },
+    { category: 'Exercise', hours: 3, month: 6, day: 12, year: 2024 },
+    { category: 'Leisure', hours: 2, month: 6, day: 12, year: 2024 },
+    { category: 'Learning', hours: 1, month: 6, day: 12, year: 2024 },
+
+    { category: 'Work', hours: 9, month: 7, day: 13, year: 2024 },
+    { category: 'Exercise', hours: 2, month: 7, day: 13, year: 2024 },
+    { category: 'Leisure', hours: 1, month: 7, day: 13, year: 2024 },
+    { category: 'Learning', hours: 3, month: 7, day: 13, year: 2024 },
+
+    { category: 'Work', hours: 8, month: 1, day: 14, year: 2024 },
+    { category: 'Exercise', hours: 1, month: 1, day: 14, year: 2024 },
+    { category: 'Leisure', hours: 2, month: 1, day: 14, year: 2024 },
+    { category: 'Learning', hours: 3, month: 1, day: 14, year: 2024 },
+
+    { category: 'Work', hours: 7, month: 6, day: 15, year: 2024 },
+    { category: 'Exercise', hours: 2, month: 6, day: 15, year: 2024 },
+    { category: 'Leisure', hours: 3, month: 6, day: 15, year: 2024 },
+    { category: 'Learning', hours: 2, month: 6, day: 15, year: 2024 }
+
   
   ];
 
