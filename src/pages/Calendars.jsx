@@ -4,12 +4,11 @@ import Button from 'react-bootstrap/Button';
 import Calendar from '../components/Calendar';
 import { Modal, Form } from 'react-bootstrap'; // Import necessary Bootstrap components
 import { useUserContext } from '../contexts/UserContext';
-import CustomNavbar from '../components/CustomNavbar';
 
 export default function Calendars() {
   const { userData, updateUserData } = useUserContext();
   const [showModal, setShowModal] = useState(false); // Track modal visibility
-  const [todo, setTodo] = useState({ name: '', date: '', color: 'blue' }); // Store to-do item as an object
+  const [todo, setTodo] = useState({ name: '', date: '', color: '#0000FF' }); // Store to-do item as an object
 
   // Handle showing and hiding the modal
   const handleClose = () => setShowModal(false);
@@ -37,7 +36,6 @@ export default function Calendars() {
 
   return (
     <>
-      <CustomNavbar />
       <Card>
         <Card.Body style={{ display: 'flex', alignItems: 'center' }}>
           <div style={{ width: '65vw' }}>
@@ -77,19 +75,15 @@ export default function Calendars() {
               />
             </Form.Group>
 
+            {/* Color Picker */}
             <Form.Group controlId="todoColor">
               <Form.Label>Color</Form.Label>
               <Form.Control
-                as="select"
+                type="color" // Use the native color picker
                 name="color"
                 value={todo.color}
                 onChange={handleInputChange}
-              >
-                <option value="blue">Blue</option>
-                <option value="red">Red</option>
-                <option value="green">Green</option>
-                <option value="yellow">Yellow</option>
-              </Form.Control>
+              />
             </Form.Group>
           </Form>
         </Modal.Body>
