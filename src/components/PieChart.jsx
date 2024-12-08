@@ -2,80 +2,56 @@ import React, { useState, useEffect } from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useUserContext } from '../contexts/UserContext'
+import { useUserContext } from '../contexts/UserContext';
 
-// Register Chart.js components
 ChartJS.register(ArcElement, Tooltip, Legend, Title);
 
 const PieChart = () => {
   const { userData } = useUserContext();
   const [activities, setActivities] = useState([]);
+  const [timePeriod, setTimePeriod] = useState('30 days');
 
-  // Fetch activities from userData
   useEffect(() => {
     if (userData?.activities) {
       setActivities(userData.activities);
     }
   }, [userData]);
 
-  // State for the selected time period
-  const [timePeriod, setTimePeriod] = useState("30 days");
-
-  // Function to filter mock data based on selected time period
-  const getFilteredData = (timePeriod) => {
+  const getFilteredData = () => {
     const now = new Date();
-    return activities.filter(item => {
-      const [year, month, day] = item.date.split("-").map(Number);
-      const itemDate = new Date(year, month - 1, day); // Adjust month for 0-based index
+    return activities.filter((item) => {
+      const [year, month, day] = item.date.split('-').map(Number);
+      const itemDate = new Date(year, month - 1, day);
       const diffTime = now - itemDate;
-      const diffDays = diffTime / (1000 * 60 * 60 * 24); // Convert time difference to days
+      const diffDays = diffTime / (1000 * 60 * 60 * 24);
 
       switch (timePeriod) {
-        case "7 days":
-          return diffDays <= 7;
-        case "30 days":
-          return diffDays <= 30;
-        case "1 month":
-          return diffDays <= 30;
-        case "3 months":
-          return diffDays <= 90;
-        case "6 months":
-          return diffDays <= 180;
-        case "1 year":
-          return diffDays <= 365;
-        default:
-          return true; // Default to all data if no valid time period is selected
+        case '7 days': return diffDays <= 7;
+        case '30 days': return diffDays <= 30;
+        case '1 month': return diffDays <= 30;
+        case '3 months': return diffDays <= 90;
+        case '6 months': return diffDays <= 180;
+        case '1 year': return diffDays <= 365;
+        default: return true;
       }
     });
   };
 
-  // Get filtered data based on the selected time period
-  const filteredData = getFilteredData(timePeriod);
+  const filteredData = getFilteredData();
 
-  // Combine the filtered data (aggregate hours by category)
   const aggregatedData = filteredData.reduce((acc, curr) => {
-    const key = curr.tag;
-    if (acc[key]) {
-      acc[key] += curr.duration;
-    } else {
-      acc[key] = curr.duration;
-    }
+    const key = curr.tag.toLowerCase();
+    acc[key] = acc[key] ? acc[key] + curr.duration : curr.duration;
     return acc;
   }, {});
 
-  // Convert aggregated data to arrays for the chart
-  const labels = Object.keys(aggregatedData); // Activity categories
-  const data = Object.values(aggregatedData); // Corresponding total hours
-
-  const backgroundColors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'];
-
   const chartData = {
-    labels: labels,
+    labels: Object.keys(aggregatedData),
     datasets: [
       {
         label: 'Minutes Spent',
-        data: data,
-        backgroundColor: backgroundColors,
+        data: Object.values(aggregatedData),
+        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
       },
     ],
   };
@@ -83,26 +59,20 @@ const PieChart = () => {
   const chartOptions = {
     responsive: true,
     plugins: {
-      legend: {
-        position: 'bottom',
-      },
-      title: {
-        display: true,
-        text: `Your activities in the last ${timePeriod}`, // Dynamic title based on timePeriod
-      },
+      legend: { position: 'bottom' },
+      title: { display: true, text: `Your activities in the last ${timePeriod}` },
     },
   };
 
-  // Handle the dropdown change
   const handleTimePeriodChange = (e) => {
     setTimePeriod(e.target.value);
   };
 
   return (
-    <div className="container mt-5">
-      <h1 className="text-center mb-4">Activity Stats</h1>
-
-      {/* Dropdown for selecting time period */}
+    <div style={styles.chartWrapper}>
+      <div style={styles.header}>
+        <h2>Pie Chart</h2>
+      </div>
       <div className="mb-4">
         <label htmlFor="timePeriod" className="form-label">Select Time Period:</label>
         <select
@@ -110,7 +80,7 @@ const PieChart = () => {
           className="form-select"
           value={timePeriod}
           onChange={handleTimePeriodChange}
-          style = {{ backgroundColor: '#eeeaea' }}
+          style={styles.dropdown}
         >
           <option value="7 days">Last 7 days</option>
           <option value="30 days">Last 30 days</option>
@@ -120,15 +90,29 @@ const PieChart = () => {
           <option value="1 year">Last 1 year</option>
         </select>
       </div>
-
-      {/* Pie Chart */}
-      <div className="d-flex justify-content-center">
-        <div style={{ width: '50%' }}>
-          <Pie data={chartData} options={chartOptions} />
-        </div>
-      </div>
+      <Pie data={chartData} options={chartOptions} />
     </div>
   );
+};
+
+const styles = {
+  chartWrapper: {
+    width: '45%',
+    padding: '20px',
+    backgroundColor: '#ffffff',
+    borderRadius: '10px',
+    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+  },
+  header: {
+    textAlign: 'center',
+    marginBottom: '20px',
+    fontWeight: '600',
+    fontSize: '18px',
+    color: '#333',
+  },
+  dropdown: {
+    backgroundColor: '#eeeaea',
+  },
 };
 
 export default PieChart;

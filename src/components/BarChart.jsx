@@ -10,42 +10,33 @@ ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend, Title)
 const BarChart = () => {
   const { userData } = useUserContext();
   const [activities, setActivities] = useState([]);
+  const [timePeriod, setTimePeriod] = useState('30 days');
 
-  // Fetch activities from userData
   useEffect(() => {
     if (userData?.activities) {
       setActivities(userData.activities);
     }
   }, [userData]);
 
-  // State for the selected time period
-  const [timePeriod, setTimePeriod] = useState("30 days");
-
-  // Handle the dropdown change
-  const handleTimePeriodChange = (e) => {
-    setTimePeriod(e.target.value);
-  };
-
-  // Function to calculate the date range for the selected time period
   const getDateRange = () => {
-    const startDate = new Date(); // Create a fresh copy of the current date
+    const startDate = new Date();
     switch (timePeriod) {
-      case "7 days":
+      case '7 days':
         startDate.setDate(startDate.getDate() - 7);
         break;
-      case "30 days":
+      case '30 days':
         startDate.setDate(startDate.getDate() - 30);
         break;
-      case "1 month":
+      case '1 month':
         startDate.setMonth(startDate.getMonth() - 1);
         break;
-      case "3 months":
+      case '3 months':
         startDate.setMonth(startDate.getMonth() - 3);
         break;
-      case "6 months":
+      case '6 months':
         startDate.setMonth(startDate.getMonth() - 6);
         break;
-      case "1 year":
+      case '1 year':
         startDate.setFullYear(startDate.getFullYear() - 1);
         break;
       default:
@@ -54,105 +45,57 @@ const BarChart = () => {
     return startDate;
   };
 
-  // Filter the data based on the selected time period
   const filteredData = activities.filter((item) => {
-    const [year, month, day] = item.date.split("-").map(Number);
+    const [year, month, day] = item.date.split('-').map(Number);
     const itemDate = new Date(year, month - 1, day);
     return itemDate >= getDateRange();
   });
 
-  // Combine hours for the same category per day
   const combinedData = filteredData.reduce((acc, item) => {
-    const [year, month, day] = item.date.split("-").map(Number);
+    const [year, month, day] = item.date.split('-').map(Number);
     const dateKey = `${year}-${month}-${day}`;
-
-    // Initialize categories with lowercase keys
-    if (!acc[dateKey]) {
-      acc[dateKey] = { exercise: 0, recreation: 0, education: 0 };
-    }
-
-    // Normalize the tag to lowercase and ensure the duration is treated as a number
+    if (!acc[dateKey]) acc[dateKey] = { exercise: 0, recreation: 0, education: 0 };
     const normalizedTag = item.tag.toLowerCase();
-    const duration = parseFloat(item.duration); // Convert duration to number
-
-    // Check if the tag exists in the initialized object
-    if (normalizedTag in acc[dateKey]) {
-      acc[dateKey][normalizedTag] += duration; // Accumulate hours
-    }
-
+    const duration = parseFloat(item.duration);
+    if (normalizedTag in acc[dateKey]) acc[dateKey][normalizedTag] += duration;
     return acc;
   }, {});
 
-  // Sort dates in descending order (most recent first)
-  const sortedDates = Object.keys(combinedData).sort((a, b) => {
-    // Ensure date format is consistent before comparing
-    const dateA = new Date(a + 'T00:00:00'); // Append time for consistency
-    const dateB = new Date(b + 'T00:00:00'); // Append time for consistency
-    return dateB - dateA; // Compare dates in descending order
-  });
+  const dates = Object.keys(combinedData).reverse();
+  const recreationHours = dates.map((date) => combinedData[date]['recreation'] || 0);
+  const exerciseHours = dates.map((date) => combinedData[date]['exercise'] || 0);
+  const educationHours = dates.map((date) => combinedData[date]['education'] || 0);
 
-
-
-  // Prepare the data for the chart with the sorted dates
-  const recreationHours = sortedDates.map((date) => combinedData[date]["recreation"] || 0);
-  const exerciseHours = sortedDates.map((date) => combinedData[date]["exercise"] || 0);
-  const educationHours = sortedDates.map((date) => combinedData[date]["education"] || 0);
-
-  // Update chart data
   const chartData = {
-    labels: sortedDates, // Dates sorted in descending order
+    labels: dates,
     datasets: [
-      {
-        label: "Recreation",
-        data: recreationHours,
-        backgroundColor: "#FFCE56",
-      },
-      {
-        label: "Exercise",
-        data: exerciseHours,
-        backgroundColor: "#36A2EB",
-      },
-      {
-        label: "Education",
-        data: educationHours,
-        backgroundColor: "#FF6384",
-      },
+      { label: 'Recreation', data: recreationHours, backgroundColor: '#FFCE56' },
+      { label: 'Exercise', data: exerciseHours, backgroundColor: '#36A2EB' },
+      { label: 'Education', data: educationHours, backgroundColor: '#FF6384' },
     ],
   };
 
   const chartOptions = {
     responsive: true,
     plugins: {
-      legend: {
-        position: "top",
-      },
-      title: {
-        display: true,
-        text: `Your activities in the last ${timePeriod}`,
-      },
+      legend: { position: 'top' },
+      title: { display: true, text: `Your activities in the last ${timePeriod}` },
     },
     scales: {
-      x: {
-        title: {
-          display: true,
-          text: "Date",
-        },
-      },
-      y: {
-        title: {
-          display: true,
-          text: "Hours",
-        },
-        beginAtZero: true,
-      },
+      x: { title: { display: true, text: 'Date' } },
+      y: { title: { display: true, text: 'Hours' }, beginAtZero: true },
     },
   };
 
-  return (
-    <div className="container mt-5">
-      <h1 className="text-center mb-4">Activity Stats</h1>
+  const handleTimePeriodChange = (e) => {
+    setTimePeriod(e.target.value);
+  };
 
-      {/* Dropdown for selecting time period */}
+  return (
+    <div style={styles.chartWrapper}>
+      <div style={styles.header}>
+        <h2>Bar Chart</h2>
+      </div>
       <div className="mb-4">
         <label htmlFor="timePeriod" className="form-label">Select Time Period:</label>
         <select
@@ -160,7 +103,7 @@ const BarChart = () => {
           className="form-select"
           value={timePeriod}
           onChange={handleTimePeriodChange}
-          style={{ backgroundColor: '#eeeaea' }}
+          style={styles.dropdown}
         >
           <option value="7 days">Last 7 days</option>
           <option value="30 days">Last 30 days</option>
@@ -170,16 +113,29 @@ const BarChart = () => {
           <option value="1 year">Last 1 year</option>
         </select>
       </div>
-
-
-      {/* Bar Chart */}
-      <div className="d-flex justify-content-center">
-        <div style={{ width: "70%" }}>
-          <Bar data={chartData} options={chartOptions} />
-        </div>
-      </div>
+      <Bar data={chartData} options={chartOptions} />
     </div>
   );
+};
+
+const styles = {
+  chartWrapper: {
+    width: '45%',
+    padding: '20px',
+    backgroundColor: '#ffffff',
+    borderRadius: '10px',
+    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+  },
+  header: {
+    textAlign: 'center',
+    marginBottom: '20px',
+    fontWeight: '600',
+    fontSize: '18px',
+    color: '#333',
+  },
+  dropdown: {
+    backgroundColor: '#eeeaea',
+  },
 };
 
 export default BarChart;

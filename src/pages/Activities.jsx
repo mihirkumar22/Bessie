@@ -7,11 +7,6 @@ import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup';
 import ToggleButton from 'react-bootstrap/ToggleButton';
 import { useUserContext } from '../contexts/UserContext';
 import CustomNavbar from '../components/CustomNavbar';
-import editicon from '../images/editbuttonpencil.png'
-import remove from '../images/removeact.png'
-import styles from './actstyle.module.css';
-
-
 
 function Activities() {
     const { userData, updateUserData, loading: userLoading } = useUserContext(); // Ensure loading state from context
@@ -128,36 +123,30 @@ function Activities() {
     }
 
     return (
-
         <>
-            <CustomNavbar />
+            {/* Custom Navbar with the styles applied */}
+            <div style={styles.navbarWrapper}>
+                <CustomNavbar />
+            </div>
 
-            <Card>
+            <Card style={styles.card}>
                 <Card.Body>
-                    <Button onClick={() => { handleShow(); setEditing(false); }}>+ Add Activity</Button>
-                    <Card.Title>Activities</Card.Title>
+                    <Button onClick={() => { handleShow(); setEditing(false); }} style={styles.addButton}>+ Add Activity</Button>
+                    <Card.Title style={styles.cardTitle}>Activities</Card.Title>
                     {activities.length > 0 ? (
                         activities.map((activity) => (
-                            <Card key={activity.id}>
+                            <Card key={activity.id} style={styles.activityCard}>
                                 <Card.Body>
-                                    <Card.Header>
-                                        <Card.Title>
+                                    <Card.Header style={styles.activityHeader}>
+                                        <Card.Title style={styles.activityTitle}>
                                             {activity.title}
                                         </Card.Title>
-                                        <Button onClick={() => handleEdit(activity.id)} className={styles.noStyleButton}> 
-                                            <div style={{display: 'flex'}}>
-                                                <img src={editicon} style={{ width: '20px', height: 'auto'}} alt="Logo" />
-                                            </div> 
-                                        </Button>
-                                        <Button onClick={() => handleDelete(activity.id)} className={styles.noStyleButton}> 
-                                            <div style={{display: 'flex'}}>
-                                                <img src={remove} style={{ width: '20px', height: 'auto'}} alt="Logo" />
-                                            </div>
-                                        </Button>
+                                        <Button onClick={() => handleEdit(activity.id)} style={styles.actionButton}>Edit</Button>
+                                        <Button onClick={() => handleDelete(activity.id)} style={styles.actionButton}>Delete</Button>
                                     </Card.Header>
-                                    <Card.Text>
+                                    <Card.Text style={styles.activityDescription}>
                                         Description: {activity.description}
-                                        <br></br>
+                                        <br />
                                         Date: {activity.date}
                                     </Card.Text>
                                 </Card.Body>
@@ -169,7 +158,7 @@ function Activities() {
                 </Card.Body>
             </Card>
 
-            <Modal show={show} onHide={handleClose}>
+            <Modal show={show} onHide={handleClose} centered style={styles.modal}>
                 <Modal.Header closeButton>
                     <Modal.Title>Make a new activity</Modal.Title>
                 </Modal.Header>
@@ -183,7 +172,7 @@ function Activities() {
                                 type="text"
                                 placeholder="Activity Title"
                                 onChange={handleChange}
-                                style={{ marginBottom: '1em' }}
+                                style={styles.formControl}
                                 required
                             />
                             <Form.Label>Description</Form.Label>
@@ -193,7 +182,7 @@ function Activities() {
                                 type="text"
                                 placeholder="Activity Description"
                                 onChange={handleChange}
-                                style={{ marginBottom: '1em' }}
+                                style={styles.formControl}
                                 required
                             />
                             <Form.Label>Date</Form.Label>
@@ -202,7 +191,7 @@ function Activities() {
                                 value={formData.date}
                                 type="date"
                                 onChange={handleChange}
-                                style={{ marginBottom: '1em' }}
+                                style={styles.formControl}
                                 required
                             />
                             <Form.Label>Duration</Form.Label>
@@ -212,7 +201,7 @@ function Activities() {
                                 type="number"
                                 placeholder="Duration (hours)"
                                 onChange={handleChange}
-                                style={{ marginBottom: '1em' }}
+                                style={styles.formControl}
                                 required
                             />
                         </Form.Group>
@@ -223,19 +212,20 @@ function Activities() {
                                 name="tags"
                                 value={formData.tag}
                                 onChange={handleTagChange}
+                                style={styles.tagGroup}
                             >
-                                <ToggleButton id="education" value="education">
+                                <ToggleButton id="education" value="education" style={styles.tagButton}>
                                     Education
                                 </ToggleButton>
-                                <ToggleButton id="recreation" value="recreation">
+                                <ToggleButton id="recreation" value="recreation" style={styles.tagButton}>
                                     Recreation
                                 </ToggleButton>
-                                <ToggleButton id="exercise" value="exercise">
+                                <ToggleButton id="exercise" value="exercise" style={styles.tagButton}>
                                     Exercise
                                 </ToggleButton>
                             </ToggleButtonGroup>
                         </Form.Group>
-                        <Button type="submit" disabled={loading}>
+                        <Button type="submit" disabled={loading} style={styles.submitButton}>
                             {loading ? 'Making post...' : 'Submit'}
                         </Button>
                     </Form>
@@ -244,5 +234,98 @@ function Activities() {
         </>
     );
 }
+
+// Styles object for navbar and page
+const styles = {
+  navbarWrapper: {
+    padding: '20px',
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+    marginBottom: '20px',
+    borderRadius: '20px 20px 0 0',
+    position: 'relative',
+    zIndex: 1,
+    backgroundColor: '#f5f5f7', // Soft Apple-like background color
+  },
+  card: {
+    borderRadius: '20px',
+    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+    backgroundColor: 'white',
+    padding: '20px',
+    margin: '20px 0',
+  },
+  cardTitle: {
+    fontSize: '24px',
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  addButton: {
+    backgroundColor: '#007aff',
+    borderColor: '#007aff',
+    color: 'white',
+    fontWeight: '500',
+    borderRadius: '15px',
+    marginBottom: '10px',
+    padding: '10px 20px',
+  },
+  activityCard: {
+    marginBottom: '15px',
+    borderRadius: '10px',
+    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+    backgroundColor: '#f9f9f9',
+  },
+  activityHeader: {
+    backgroundColor: '#f1f1f1',
+    padding: '15px',
+    borderRadius: '10px 10px 0 0',
+    display: 'flex',
+  },
+  activityTitle: {
+    fontSize: '18px',
+    fontWeight: '600',
+    color: '#333',
+  },
+  activityDescription: {
+    color: '#555',
+    fontSize: '14px',
+  },
+  actionButton: {
+    backgroundColor: '#007aff',
+    borderColor: '#007aff',
+    color: 'white',
+    fontWeight: '500',
+    borderRadius: '10px',
+    margin: '0 5px',
+    padding: '5px 15px',
+  },
+  modal: {
+    borderRadius: '20px',
+    backgroundColor: '#f9f9f9',
+  },
+  formControl: {
+    borderRadius: '15px',
+    borderColor: '#d1d1d6',
+    marginBottom: '1.5em',
+    boxShadow: 'none',
+  },
+  tagGroup: {
+    marginBottom: '20px',
+  },
+  tagButton: {
+    backgroundColor: '#f0f0f5',
+    borderColor: '#ccc',
+    color: '#007aff',
+    borderRadius: '15px',
+    marginRight: '10px',
+    padding: '10px 20px',
+  },
+  submitButton: {
+    backgroundColor: '#007aff',
+    borderColor: '#007aff',
+    color: 'white',
+    fontWeight: '600',
+    borderRadius: '15px',
+    padding: '12px 20px',
+  },
+};
 
 export default Activities;
